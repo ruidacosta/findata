@@ -1,0 +1,18 @@
+Taxas de Juros
+EURIBOR => todas elas
+LIBOR => todas elas
+
+Moedas
+EURUSD
+EURGBP
+EURYNN
+EURAUD
+
+Divida Publica
+Portugal
+Alemanha
+França
+Espanha
+EUA
+
+
