@@ -2,6 +2,8 @@ Taxas de Juros
 EURIBOR => todas elas
 LIBOR => todas elas
 
+https://www.global-rates.com/en/interest-rates/euribor/euribor.aspx
+
 Moedas
 EURUSD
 EURGBP
@@ -15,4 +17,4 @@ França
 Espanha
 EUA
 
-
+Site da Reuters 
