@@ -64,7 +64,7 @@ def parse_arguments() -> dict:
     return vars(args)
 
 
-def read_config(path: str) -> dict:
+def read_config(path: str) -> configparser.ConfigParser:
     # check if file exists
     config = configparser.ConfigParser()
     config.read(path)
@@ -81,7 +81,7 @@ def sqlite_store(db_name: str, type: str, date: str, value: float) -> None:
     database.save(type, date, value)
 
 
-def control_storage(config: dict, date: str, value: float) -> None:
+def control_storage(config: configparser.ConfigParser, date: str, value: float) -> None:
     try:
         type = config["Storage"]["type"]
         if type == "stdin":
