@@ -85,7 +85,7 @@ WSGI_APPLICATION = "dashboard.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "../findata.db",
+        "NAME": BASE_DIR / "./findata.db",
     }
 }
 

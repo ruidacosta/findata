@@ -8,10 +8,12 @@ class HomeView(TemplateView):
     template_name = "_base_vue.html"
 
 # Get Euribor3M rates in json format
-def Euribor3M(request):
+def Euribor3M(_request):
     # get data from database
+    #data = Rate.objects.all().order_by('rate_date')
+    #data = data.filter(rate_type='Euribor 3M').values()
     data = Rate.objects.filter(rate_type='Euribor 3M').order_by('rate_date').values()
-    return JsonResponse({"data": list(data)}, safe=False)
+    return JsonResponse({"data": list(data.values())}, safe=False)
 
 # Get Euribor3M rates in json format
 def Euribor6M(request):
