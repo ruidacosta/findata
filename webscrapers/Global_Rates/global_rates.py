@@ -119,16 +119,21 @@ def webscrap(url: str, xpath: str) -> tuple:
 
     line = driver.find_elements(By.XPATH, xpath + "/td")
     #cells = line.find_elements(By.XPATH, "/td")
+    data = ('', '')
     if len(line) == 2:
         data = (line[0].accessible_name.strip(), line[1].accessible_name.strip().strip()[:-2])
     return data[0], data[1]
 
 
 def proccess_values(date: str, value: str):
-    date_value = datetime.strptime(date, "%B %d %Y").strftime("%Y-%m-%d")
-    percentage_value = float(value)
-    logging.info(f"Date: {date} :: Value: {value}%")
-    return date_value, percentage_value
+    try:
+        date_value = datetime.strptime(date, "%B %d %Y").strftime("%Y-%m-%d")
+        percentage_value = float(value)
+        logging.info(f"Date: {date} :: Value: {value}%")
+        return date_value, percentage_value
+    except ValueError as error:
+        logging.error(error)
+        return '', 0
 
 
 def main() -> None:
