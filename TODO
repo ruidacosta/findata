@@ -1,0 +1,35 @@
+- Make all windows and modals singletons
+    - this is to maintain the state (strings, etc.)
+    - [LoginModal, ExitModal] destroy after the successfully login
+
+- Create/check git repository
+
+- Prepare Settings window (to add settings in the future)
+    - Simple window (add tabs, 2 buttons [save and cancel])
+
+- Add info to About window
+    - Add image in to top
+
+- Using Esc key to close window on focus
+
+- Create a class for database manipulation
+    - Easy to mock
+
+- Create logic part for the login
+    - Using sqlite database (first approach)
+
+- Create tests suite
+    - Use google test framework
+    - Focus on logic
+
+- Sketch for the accounts window
+    - Think what should be in the window
+    - Take a look on hledger to have ideas
+    - Think/Prepare logic
+
+- Sketch for the assets window
+
+- Sketch for financial windows
+    - Stock window
+    - Cash window
+    - Commodities window
