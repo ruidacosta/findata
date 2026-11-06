@@ -211,6 +211,12 @@ int main(int, char **) {
     constexpr auto clear_color = ImVec4(1.0,0.0,0.0,1.0);
     const GLuint backgroundTexture = LoadTextureFromFile("misc/pexels-burst-545064.jpg");
 
+    // Frames
+    LoginModal login_modal;
+
+    // Open Login Modal
+    login_modal.Open();
+
     // Main loop
 #ifdef __EMSCRIPTEN__
     // For an Emscripten build we are disabling file-system access, so let's not attempt to do a fopen() of the imgui.ini file.
@@ -265,11 +271,22 @@ int main(int, char **) {
         if (windows_state[DEMO_WINDOW])
             ImGui::ShowDemoWindow(&windows_state[DEMO_WINDOW]);
 
+	if (!login_modal.IsLoggedIn()) {
+	  login_modal.Open();
+	}
+	else {
+	  login_modal.Reset();
+	  login_modal.Open();
+	}
         // 1. Show login screen
+	/*
         if (windows_state[LOGIN_WINDOW]) {
-            LoginModal login_modal{};
+	  //LoginModal login_modal{};
+	  LoginModal login_modal = LoginModal::getInstance();
             login_modal.show(&windows_state[LOGIN_WINDOW]);
+	    
         }
+	*/
 
         // 2. Show a simple window that we create ourselves. We use a Begin/End pair to create a named window.
         if (windows_state[ABOUT_WINDOW]) {
@@ -281,6 +298,8 @@ int main(int, char **) {
             ExitModal exit_modal{};
             exit_modal.show(&windows_state[CONFIRM_EXIT_MODAL], &windows_state[MAIN_WINDOW]);
         }
+
+	login_modal.Render();
 
         ImGui::Render();
         glViewport(0, 0, static_cast<int>(io.DisplaySize.x), static_cast<int>(io.DisplaySize.y));
