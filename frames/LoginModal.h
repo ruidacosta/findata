@@ -20,9 +20,11 @@ class LoginModal {
   // Renders the ImGui. Pass a callback or flag if you want to know when login succeeds.
   void Render(bool *closed = nullptr);
 
+  void LogOut();
+
   // Getters for authentication check
-  bool IsLoggedIn() const { return m_isLoggedIn; };
-  const std::string& GetUsername() const { return m_username; }
+  bool IsLoggedIn() { return m_isLoggedIn; };
+  const std::string GetUsername() const { return std::string(m_username); }
 
   void Reset();
 

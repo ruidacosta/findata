@@ -8,7 +8,7 @@
 
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
-#include <GL/glew.h> // Ou o teu carregador de OpenGL (glad, etc.)
+#include <GL/glew.h>
 
 #include "examples/libs/emscripten/emscripten_mainloop_stub.h"
 #include "frames/AboutWindow.h"
@@ -21,7 +21,6 @@
 #endif
 
 
-
 // This can also be compiled and run with Emscripten!
 #ifdef __EMSCRIPTEN__
 #include "emscripten_mainloop_stb.h"
@@ -30,23 +29,24 @@
 namespace {
     enum FRAMES {
         MAIN_WINDOW,
-        LOGIN_WINDOW,
         DEMO_WINDOW,
         ABOUT_WINDOW,
         CONFIRM_EXIT_MODAL
     };
 }
 
-static void initWindowState(std::map<FRAMES, bool> * states) {
+// Frames
+static LoginModal login_modal;
+
+static void initWindowState(std::map<FRAMES, bool> *states) {
     states->insert(std::pair(MAIN_WINDOW, false));
-    states->insert(std::pair(LOGIN_WINDOW, true));
     states->insert(std::pair(DEMO_WINDOW, false));
     states->insert(std::pair(ABOUT_WINDOW, false));
     states->insert(std::pair(CONFIRM_EXIT_MODAL, false));
 }
 
 // Create the Menu Bar in Main window
-static void CreateMainMenuBar(std::map<FRAMES, bool> * states) {
+static void CreateMainMenuBar(std::map<FRAMES, bool> *states) {
     if (ImGui::BeginMainMenuBar()) {
         if (ImGui::BeginMenu("File")) {
             if (ImGui::MenuItem("Create")) {
@@ -57,6 +57,9 @@ static void CreateMainMenuBar(std::map<FRAMES, bool> * states) {
             }
             if (ImGui::MenuItem("Save as..")) {
             }
+            if (ImGui::MenuItem("Lock screen")) {
+                login_modal.LogOut();
+            }
             if (ImGui::MenuItem("Quit", "Alt+F4")) {
                 // popup to confirm
                 (*states)[CONFIRM_EXIT_MODAL] = true;
@@ -64,21 +67,29 @@ static void CreateMainMenuBar(std::map<FRAMES, bool> * states) {
             ImGui::EndMenu();
         }
         if (ImGui::BeginMenu("Windows")) {
-            if (ImGui::MenuItem("Accounts")) {}
-            if (ImGui::MenuItem("Cash")) {}
-            if (ImGui::MenuItem("Assets")) {}
+            if (ImGui::MenuItem("Accounts")) {
+            }
+            if (ImGui::MenuItem("Cash")) {
+            }
+            if (ImGui::MenuItem("Assets")) {
+            }
             ImGui::Separator();
             if (ImGui::BeginMenu("Financial")) {
-                if (ImGui::MenuItem("Forex")) {}
-                if (ImGui::MenuItem("Stocks")) {}
-                if (ImGui::MenuItem("Commodities")) {}
-                if (ImGui::MenuItem("ETFs")) {}
+                if (ImGui::MenuItem("Forex")) {
+                }
+                if (ImGui::MenuItem("Stocks")) {
+                }
+                if (ImGui::MenuItem("Commodities")) {
+                }
+                if (ImGui::MenuItem("ETFs")) {
+                }
                 ImGui::EndMenu();
             }
             ImGui::EndMenu();
         }
         if (ImGui::BeginMenu("Help")) {
-            if (ImGui::MenuItem("Shortcuts")) {}
+            if (ImGui::MenuItem("Shortcuts")) {
+            }
             if (ImGui::MenuItem("About")) {
                 (*states)[ABOUT_WINDOW] = true;
             }
@@ -88,13 +99,13 @@ static void CreateMainMenuBar(std::map<FRAMES, bool> * states) {
     }
 }
 
-GLuint LoadTextureFromFile(std::string path) {
+static GLuint LoadTextureFromFile(const std::string &path) {
     int width, height, channels;
 
-    unsigned char* data = stbi_load(path.c_str(), &width, &height, &channels, 4); // Força RGBA
+    unsigned char *data = stbi_load(path.c_str(), &width, &height, &channels, 4); // Force RGBA
 
     if (!data) {
-        printf("Erro ao carregar a imagem: %s\n", path.c_str());
+        printf("Failed to load image: %s\n", path.c_str());
         return 0;
     }
 
@@ -102,7 +113,7 @@ GLuint LoadTextureFromFile(std::string path) {
     glGenTextures(1, &textureID);
     glBindTexture(GL_TEXTURE_2D, textureID);
 
-    // Configuração dos filtros de redimensionamento
+    // Resizing filters configuration
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
@@ -117,7 +128,7 @@ GLuint LoadTextureFromFile(std::string path) {
 
 // Main code
 int main(int, char **) {
-    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_GAMECONTROLLER) !=0) {
+    if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_GAMECONTROLLER) != 0) {
         printf("Error: %s\n", SDL_GetError());
         return -1;
     }
@@ -155,8 +166,10 @@ int main(int, char **) {
     SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
     SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
     SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8);
-    constexpr auto window_flags = static_cast<SDL_WindowFlags>(SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI);
-    SDL_Window* window = SDL_CreateWindow("Findata - Personal Finances", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1280, 720, window_flags);
+    constexpr auto window_flags = static_cast<SDL_WindowFlags>(
+        SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI);
+    SDL_Window *window = SDL_CreateWindow("Findata - Personal Finances", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
+                                          1280, 720, window_flags);
     if (window == nullptr) {
         printf("Error SDL_CreateWindow(): %s\n", SDL_GetError());
         return -1;
@@ -174,7 +187,8 @@ int main(int, char **) {
     // Setup Dear ImGui context
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
-    ImGuiIO& io = ImGui::GetIO(); (void)io;
+    ImGuiIO &io = ImGui::GetIO();
+    (void) io;
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard; // Enable Keyboard Controls
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad; // Enable Gamepad Controls
 
@@ -208,14 +222,12 @@ int main(int, char **) {
     std::map<FRAMES, bool> windows_state{};
     initWindowState(&windows_state);
     //constexpr auto clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
-    constexpr auto clear_color = ImVec4(1.0,0.0,0.0,1.0);
+    constexpr auto clear_color = ImVec4(1.0, 0.0, 0.0, 1.0);
     const GLuint backgroundTexture = LoadTextureFromFile("misc/pexels-burst-545064.jpg");
 
-    // Frames
-    LoginModal login_modal;
+
 
     // Open Login Modal
-    login_modal.Open();
 
     // Main loop
 #ifdef __EMSCRIPTEN__
@@ -237,7 +249,8 @@ int main(int, char **) {
             ImGui_ImplSDL2_ProcessEvent(&event);
             if (event.type == SDL_QUIT)
                 windows_state[MAIN_WINDOW] = true;
-            if (event.type == SDL_WINDOWEVENT && event.window.event == SDL_WINDOWEVENT_CLOSE && event.window.windowID == SDL_GetWindowID(window))
+            if (event.type == SDL_WINDOWEVENT && event.window.event == SDL_WINDOWEVENT_CLOSE && event.window.windowID ==
+                SDL_GetWindowID(window))
                 windows_state[MAIN_WINDOW] = true;
         }
         if (SDL_GetWindowFlags(window) & SDL_WINDOW_MINIMIZED) {
@@ -250,10 +263,10 @@ int main(int, char **) {
         ImGui_ImplSDL2_NewFrame();
         ImGui::NewFrame();
 
-        // Obter o tamanho atual da janela do SDL
-        ImGuiIO& io = ImGui::GetIO();
+        // Get current size of SDL display
+        ImGuiIO &_io = ImGui::GetIO();
         ImVec2 pos_inicial = ImVec2(0, 0);
-        ImVec2 tamanho_janela = io.DisplaySize; // Ocupa todo o ecrã
+        ImVec2 tamanho_janela = _io.DisplaySize; // Ocupa todo o ecrã
 
         // Desenha a textura diretamente no fundo
         ImGui::GetBackgroundDrawList()->AddImage(
@@ -261,32 +274,20 @@ int main(int, char **) {
             pos_inicial,
             tamanho_janela,
             ImVec2(0, 0), // Coordenada UV inicial (topo esquerdo)
-            ImVec2(1, 1)  // Coordenada UV final (base direita)
+            ImVec2(1, 1) // Coordenada UV final (base direita)
         );
 
         // Main Menu
         CreateMainMenuBar(&windows_state);
 
+        // if not loggedIn show Log In Modal
+        if (!login_modal.IsLoggedIn()) {
+            login_modal.Open();
+        }
+
         // 0. Show the big demo window (most of the sample code is in ImGui::ShowDemoWindow()! You can browse its code to learn more about Dear ImGui!).
         if (windows_state[DEMO_WINDOW])
             ImGui::ShowDemoWindow(&windows_state[DEMO_WINDOW]);
-
-	if (!login_modal.IsLoggedIn()) {
-	  login_modal.Open();
-	}
-	else {
-	  login_modal.Reset();
-	  login_modal.Open();
-	}
-        // 1. Show login screen
-	/*
-        if (windows_state[LOGIN_WINDOW]) {
-	  //LoginModal login_modal{};
-	  LoginModal login_modal = LoginModal::getInstance();
-            login_modal.show(&windows_state[LOGIN_WINDOW]);
-	    
-        }
-	*/
 
         // 2. Show a simple window that we create ourselves. We use a Begin/End pair to create a named window.
         if (windows_state[ABOUT_WINDOW]) {
@@ -299,11 +300,12 @@ int main(int, char **) {
             exit_modal.show(&windows_state[CONFIRM_EXIT_MODAL], &windows_state[MAIN_WINDOW]);
         }
 
-	login_modal.Render();
+        login_modal.Render();
 
         ImGui::Render();
         glViewport(0, 0, static_cast<int>(io.DisplaySize.x), static_cast<int>(io.DisplaySize.y));
-        glClearColor(clear_color.x * clear_color.w, clear_color.y * clear_color.w, clear_color.z * clear_color.w, clear_color.w);
+        glClearColor(clear_color.x * clear_color.w, clear_color.y * clear_color.w, clear_color.z * clear_color.w,
+                     clear_color.w);
         glClear(GL_COLOR_BUFFER_BIT);
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
         SDL_GL_SwapWindow(window);
