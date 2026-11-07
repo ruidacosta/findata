@@ -1,13 +1,6 @@
-- Update ImGui version
-    - create submodule
-
 - Make all windows and modals singletons
     - this is to maintain the state (strings, etc.)
     - [LoginModal, ExitModal] destroy after the successfully login
-
-- Implement git flow
-
-- Create/check git repository - DONE
 
 - Prepare Settings window (to add settings in the future)
     - Simple window (add tabs, 2 buttons [save and cancel])
