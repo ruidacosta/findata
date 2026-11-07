@@ -17,6 +17,8 @@ Controler& Controler::getInstance() {
 }
 
 bool Controler::login(std::string username, std::string password) {
-    std::cout << "Login: " << username << "/" << password << std::endl;
+    if ((username == "admin") && (password == "admin")) {
+        return true;
+    }
     return false;
 }
