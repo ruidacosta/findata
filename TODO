@@ -8,8 +8,6 @@
 - Add info to About window
     - Add image in to top
 
-- Using Esc key to close window on focus
-
 - Create a class for database manipulation
     - Easy to mock
 

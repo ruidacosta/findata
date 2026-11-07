@@ -4,6 +4,9 @@
 
 #include "AboutWindow.h"
 
+#include <iostream>
+#include <ostream>
+
 #include "imgui.h"
 
 AboutWindow::AboutWindow() = default;
@@ -162,6 +165,11 @@ void AboutWindow::show(bool *closed) {
             ImGui::LogFinish();
         }
         ImGui::EndChild();
+    }
+
+    // Close when Esc key is pressed
+    if (ImGui::IsKeyPressed(ImGuiKey_Escape)) {
+        *closed = false;
     }
     ImGui::End();
 

@@ -30,6 +30,11 @@ void ExitModal::show(bool *closed, bool *exitApp) {
         ImGui::SetItemDefaultFocus();
         ImGui::SameLine();
         if (ImGui::Button("No", ImVec2(120, 0))) { *closed = false; }
+
+        // cancel when Esc key is pressed
+        if (ImGui::IsKeyPressed(ImGuiKey_Escape)) {
+            *closed = false;
+        }
         ImGui::EndPopup();
     }
 }
