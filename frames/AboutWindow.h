@@ -5,6 +5,7 @@
 #ifndef FINDATA_ABOUTWINDOW_H
 #define FINDATA_ABOUTWINDOW_H
 
+#include "../utils.h"
 
 class AboutWindow {
     public:
@@ -13,6 +14,10 @@ class AboutWindow {
     AboutWindow(const AboutWindow&);
     AboutWindow &operator=(const AboutWindow&);
     void show(bool *closed);
+    private:
+    GLuint m_image;
+    GLint m_image_width;
+    GLint m_image_height;
 };
 
 

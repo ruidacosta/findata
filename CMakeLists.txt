@@ -38,6 +38,8 @@ add_executable(
         frames/LoginModal.h
         core/Controler.cpp
         core/Controler.h
+        utils.cpp
+        utils.h
 )
 
 target_link_libraries(findata -lGL)

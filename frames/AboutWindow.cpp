@@ -9,7 +9,11 @@
 
 #include "imgui.h"
 
-AboutWindow::AboutWindow() = default;
+AboutWindow::AboutWindow() {
+    m_image = LoadTextureFromFile("../misc/logo-negative.png");
+    m_image_width = GetTextureWidth(m_image);
+    m_image_height = GetTextureHeight(m_image);
+}
 
 AboutWindow::~AboutWindow() = default;
 
@@ -23,6 +27,12 @@ void AboutWindow::show(bool *closed) {
         ImGui::End();
         return;
     }
+    //const GLuint backgroundTexture = LoadTextureFromFile("../misc/logo-negative.png");
+    //const GLuint backgroundTexture = LoadTextureFromFile("misc/pexels-burst-545064.jpg");
+
+    ImGui::Image(static_cast<ImTextureID>(static_cast<intptr_t>(m_image)), ImVec2(m_image_width, m_image_height)); //, ImVec2(1, 0));
+    //ImGui::Image(static_cast<ImTextureID>(static_cast<intptr_t>(m_image)), ImVec2(304, 67));
+
     ImGui::Text("Dear ImGui %s (%d)", IMGUI_VERSION, IMGUI_VERSION_NUM);
 
     ImGui::TextLinkOpenURL("Homepage", "https://github.com/ocornut/imgui");
