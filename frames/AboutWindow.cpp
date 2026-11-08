@@ -64,6 +64,7 @@ void AboutWindow::show(bool *closed) {
     ImGui::Bullet(); ImGui::TextLinkOpenURL("Dear ImGui", "https://github.com/ocornut/imgui"); ImGui::SameLine(); ImGui::TextWrapped("- Immediate Mode Graphical User Interface (MIT License)");
     ImGui::Bullet(); ImGui::TextLinkOpenURL("SQLite","https://www.sqlite.org/"); ImGui::SameLine(); ImGui::TextWrapped("- Serverless, self-contained SQL database engine (Public Domain)");
     ImGui::Bullet(); ImGui::TextLinkOpenURL("libcurl", "https://curl.se/libcurl/"); ImGui::SameLine(); ImGui::TextWrapped("- Multiprotocol file transfer library (curl License / MIT derivative)");
+    ImGui::Bullet(); ImGui::TextLinkOpenURL("Google Test","https://github.com/google/googletest"); ImGui::SameLine(); ImGui::SameLine(); ImGui::TextWrapped("- Google's C++ test and mocking framework (BSD 3-Clause License)");
     ImGui::Spacing();
     ImGui::TextWrapped("Engineered with C++ & Dear ImGui");
     ImGui::Spacing();
