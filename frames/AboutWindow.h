@@ -15,6 +15,8 @@ class AboutWindow {
     AboutWindow &operator=(const AboutWindow&);
     void show(bool *closed);
     private:
+    static void buildConfigInfo();
+
     GLuint m_image;
     GLint m_image_width;
     GLint m_image_height;

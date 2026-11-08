@@ -8,6 +8,8 @@
 
 #include <GL/glew.h>
 
+#define __FINDATA_VERSION__ "0.0.1"
+
 GLuint LoadTextureFromFile(const std::string &path);
 GLint GetTextureWidth(GLuint textureID);
 GLint GetTextureHeight(GLuint textureID);
